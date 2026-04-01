@@ -1,0 +1,12 @@
+# Виртуальное окружение
+.venv/
+.env
+
+# Кеш Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Конфиги vscode
+.vscode/
