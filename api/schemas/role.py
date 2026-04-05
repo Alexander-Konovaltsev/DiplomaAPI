@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-class RoleOut(BaseModel):
+class GetRolesResponse(BaseModel):
     id: int
     name: str
 

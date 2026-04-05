@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr, field_validator, ValidationInfo
 from typing import Optional
 
-class UserCreate(BaseModel):
+class UserCreateRequest(BaseModel):
     last_name: str
     first_name: str
     patronymic: Optional[str] = None
@@ -35,3 +35,18 @@ class UserCreateResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class UserLoginRequest(BaseModel):
+    email: EmailStr
+    password: str
+
+    @field_validator("email", mode="before")
+    @classmethod
+    def validate_required_strings(cls, v, info: ValidationInfo):
+        if not v or not v.strip():
+            raise ValueError(f"Поле {info.field_name} не может быть пустым")
+        return v.strip()
+
+class UserLoginResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"

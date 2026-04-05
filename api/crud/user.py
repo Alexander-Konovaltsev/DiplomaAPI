@@ -1,12 +1,12 @@
 from sqlalchemy.orm import Session
 from models.user import User
-from schemas.user import UserCreate
+from schemas.user import UserCreateRequest
 from services.security_service import SecurityService
 
 def get_user_by_email(db: Session, email: str):
     return db.query(User).filter(User.email == email).first()
 
-def create_user(db: Session, user_data: UserCreate):
+def create_user(db: Session, user_data: UserCreateRequest):
     hashed_password = SecurityService.hash_password(user_data.password)
 
     db_user = User(
