@@ -3,3 +3,6 @@ from models.role import Role
 
 def get_roles(db: Session):
     return db.query(Role).all()
+
+def get_role_by_id(db: Session, role_id: int):
+    return db.query(Role).filter(Role.id == role_id).first()
