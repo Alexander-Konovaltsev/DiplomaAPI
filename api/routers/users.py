@@ -13,7 +13,7 @@ def register_user(user: UserCreateRequest, db: Session = Depends(get_db)):
     
     existing_user = get_user_by_email(db, user.email)
     if existing_user:
-        raise HTTPException(status_code=422, detail="Email уже зарегистрирован")
+        raise HTTPException(status_code=409, detail="Email уже зарегистрирован")
 
     if not get_role_by_id(db, user.role_id):
         raise HTTPException(status_code=422, detail="Роль с таким id не существует")
