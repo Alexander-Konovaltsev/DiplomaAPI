@@ -20,7 +20,7 @@ def register_user(user: UserCreateRequest, db: Session = Depends(get_db)):
 
     return create_user(db, user)
 
-@router.post("/login", response_model=UserLoginResponse)
+@router.post("/authorization", response_model=UserLoginResponse)
 def login_user(login_data: UserLoginRequest, db: Session = Depends(get_db)):
     user = get_user_by_email(db, login_data.email)
     if not user:
