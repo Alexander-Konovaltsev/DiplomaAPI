@@ -4,7 +4,7 @@ class SceneResponse(BaseModel):
     id: int
     name: str
     title: str
-    descripiton: str
+    description: str
 
     class Config:
         from_attributes = True

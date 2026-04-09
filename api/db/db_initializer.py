@@ -57,7 +57,7 @@ class DBInitializer:
                 id=1,
                 name=SceneName.BARREL.value,
                 title=SceneTitle.BARREL.value,
-                descripiton=SceneDescription.BARREL.value
+                description=SceneDescription.BARREL.value
             )
         ]
 
