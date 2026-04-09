@@ -6,6 +6,7 @@ from models.model import Model
 from models.scene_model import SceneModel
 from enums.role import RoleName
 from enums.scene import SceneName, SceneTitle, SceneDescription
+from enums.model import ModelName, ModelTitle, ModelDescription
 from crud.user import get_user_by_email
 from services.security_service import SecurityService
 
@@ -18,6 +19,7 @@ class DBInitializer:
             self.init_scenes()
             self.init_models()
             self.init_scenes_models()
+            self.init_model_children()
         finally:
             self.db.close()
 
@@ -108,5 +110,38 @@ class DBInitializer:
             )
             if not exists:
                 self.db.add(link)
+
+        self.db.commit()
+
+    def init_model_children(self):
+        children_model = [
+            Model(
+                id=2,
+                name=ModelName.BREATING_VALVE.value,
+                title=ModelTitle.BREATING_VALVE.value,
+                description=ModelDescription.BREATING_VALVE.value,
+                is_draggable=False,
+                is_rotatable=False,
+                is_assemblable=False,
+                is_informational=True,
+                parent_id=1
+            ),
+            Model(
+                id=3,
+                name=ModelName.MANHOLE_COVER.value,
+                title=ModelTitle.MANHOLE_COVER.value,
+                description=ModelDescription.MANHOLE_COVER.value,
+                is_draggable=False,
+                is_rotatable=False,
+                is_assemblable=False,
+                is_informational=True,
+                parent_id=1
+            )
+        ]
+
+        for child in children_model:
+            exists = self.db.query(Model).filter(Model.name == child.name).first()
+            if not exists:
+                self.db.add(child)
 
         self.db.commit()
