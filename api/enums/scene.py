@@ -1,7 +1,7 @@
 from enum import Enum
 
 class SceneName(Enum):
-    BARREL = "barrel_scene"
+    BARREL = "BarrelScene"
 
 class SceneTitle(Enum):
     BARREL = "РВСП-5000"

@@ -1,7 +1,7 @@
 from enum import Enum
 
 class RoleName(Enum):
-    STUDENT = "Студен",
+    STUDENT = "Студент",
     TEACHER = "Преподаватель",
     EMPLOYEE = "Сотрудник"
     UNDEFINED = "Прочее"
