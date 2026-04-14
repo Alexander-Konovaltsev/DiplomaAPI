@@ -136,6 +136,17 @@ class DBInitializer:
                 is_assemblable=False,
                 is_informational=True,
                 parent_id=1
+            ),
+            Model(
+                id=4,
+                name=ModelName.XLOPUSHA_XP.value,
+                title=ModelTitle.XLOPUSHA_XP.value,
+                description=ModelDescription.XLOPUSHA_XP.value,
+                is_draggable=False,
+                is_rotatable=False,
+                is_assemblable=False,
+                is_informational=True,
+                parent_id=1
             )
         ]
 
