@@ -24,3 +24,9 @@ def create_user_model_view(db: Session, data: UserModelViewCreateRequest, user_i
             scene_id=data.scene_id,
             model_id=data.model_id
         ).first()
+    
+def get_user_models_views_by_scene_id(db: Session, user_id: int, scene_id: int):
+    return db.query(UserModelView).filter_by(
+        user_id=user_id,
+        scene_id=scene_id
+    ).all();
