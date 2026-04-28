@@ -14,6 +14,6 @@ class Model(Base):
     is_assemblable = Column(Boolean, nullable=False, default=False)
     is_informational = Column(Boolean, nullable=False, default=False)
     
-    parent_id = Column(Integer, ForeignKey('models.id'), nullable=True)
+    parent_id = Column(Integer, ForeignKey("models.id"), nullable=True)
 
     parent = relationship("Model", remote_side=[id], backref="children")

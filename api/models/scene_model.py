@@ -6,9 +6,9 @@ class SceneModel(Base):
     __tablename__ = "scenes_models"
 
     id = Column(Integer, primary_key=True, index=True)
-    scene_id = Column(Integer, ForeignKey('scenes.id'), nullable=False)
-    model_id = Column(Integer, ForeignKey('models.id'), nullable=False)
+    scene_id = Column(Integer, ForeignKey("scenes.id"), nullable=False)
+    model_id = Column(Integer, ForeignKey("models.id"), nullable=False)
     
-    scene = relationship("Scene", backref="scene_models")
-    model = relationship("Model", backref="scene_models")
+    scene = relationship("Scene", backref="scenes_models")
+    model = relationship("Model", backref="scenes_models")
     
