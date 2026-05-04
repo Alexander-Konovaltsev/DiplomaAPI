@@ -10,6 +10,7 @@ class Quiz(Base):
     description = Column(Text, nullable=False)
     attempts_count = Column(Integer, nullable=False)
     questions_count = Column(Integer, nullable=False)
+    time = Column(Integer, nullable=False)
 
     scene_id = Column(Integer, ForeignKey("scenes.id"), nullable=False)
 
