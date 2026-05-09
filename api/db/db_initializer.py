@@ -4,6 +4,7 @@ from models.user import User
 from models.scene import Scene
 from models.model import Model
 from models.scene_model import SceneModel
+from models.quiz import Quiz
 from enums.role import RoleName
 from enums.scene import SceneName, SceneTitle, SceneDescription
 from enums.model import ModelName, ModelTitle, ModelDescription
@@ -20,6 +21,7 @@ class DBInitializer:
             self.init_models()
             self.init_scenes_models()
             self.init_model_children()
+            self.init_quizzes()
         finally:
             self.db.close()
 
@@ -154,5 +156,34 @@ class DBInitializer:
             exists = self.db.query(Model).filter(Model.name == child.name).first()
             if not exists:
                 self.db.add(child)
+
+        self.db.commit()
+
+    def init_quizzes(self):
+        quizzes = [
+            Quiz(
+                id=1,
+                title="Первый тестовый основной тест на основополагающие знания",
+                description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas iaculis viverra ultricies. Morbi varius maximus risus, vitae interdum tortor facilisis eget. Proin rhoncus, magna id fermentum venenatis, ligula lacus sollicitudin est, at porttitor diam ligula a turpis. Proin scelerisque magna ac augue ullamcorper consectetur. Pellentesque nibh ligula, pulvinar quis mi id, maximus dapibus felis. Maecenas dignissim maximus turpis in suscipit. Vivamus vitae elit viverra, lacinia turpis quis, lobortis sapien. Cras quam nibh, dignissim sit amet gravida a, tempor ut metus. Maecenas iaculis velit ac placerat eleifend. Integer non luctus nunc. Cras mauris enim, sollicitudin sit amet odio id, vulputate accumsan augue.",
+                attempts_count=2,
+                questions_count=5,
+                time=10,
+                scene_id=1
+            ),
+            Quiz(
+                id=2,
+                title="Второй тестовый дополнительный тест на расширенные знания",
+                description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas iaculis viverra ultricies. Morbi varius maximus risus, vitae interdum tortor facilisis eget. Proin rhoncus, magna id fermentum venenatis, ligula lacus sollicitudin est, at porttitor diam ligula a turpis. Proin scelerisque magna ac augue ullamcorper consectetur. Pellentesque nibh ligula, pulvinar quis mi id, maximus dapibus felis. Maecenas dignissim maximus turpis in suscipit. Vivamus vitae elit viverra, lacinia turpis quis, lobortis sapien. Cras quam nibh, dignissim sit amet gravida a, tempor ut metus. Maecenas iaculis velit ac placerat eleifend. Integer non luctus nunc. Cras mauris enim, sollicitudin sit amet odio id, vulputate accumsan augue.",
+                attempts_count=1,
+                questions_count=3,
+                time=5,
+                scene_id=1
+            ),
+        ]
+
+        for quiz in quizzes:
+            exists = self.db.query(Quiz).filter(Quiz.title == quiz.title).first()
+            if not exists:
+                self.db.add(quiz)
 
         self.db.commit()
