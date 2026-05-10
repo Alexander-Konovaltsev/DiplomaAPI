@@ -5,6 +5,7 @@ from models.scene import Scene
 from models.model import Model
 from models.scene_model import SceneModel
 from models.quiz import Quiz
+from models.result import Result
 from enums.role import RoleName
 from enums.scene import SceneName, SceneTitle, SceneDescription
 from enums.model import ModelName, ModelTitle, ModelDescription
@@ -22,6 +23,7 @@ class DBInitializer:
             self.init_scenes_models()
             self.init_model_children()
             self.init_quizzes()
+            self.init_results()
         finally:
             self.db.close()
 
@@ -185,5 +187,32 @@ class DBInitializer:
             exists = self.db.query(Quiz).filter(Quiz.title == quiz.title).first()
             if not exists:
                 self.db.add(quiz)
+
+        self.db.commit()
+    
+    def init_results(self):
+        results = [
+            Result(
+                id=1,
+                percent=68,
+                total_answers=5,
+                correct_answers=2,
+                user_id=1,
+                quiz_id=1
+            ),
+            Result(
+                id=2,
+                percent=80,
+                total_answers=5,
+                correct_answers=2,
+                user_id=1,
+                quiz_id=2
+            )
+        ]
+
+        for result in results:
+            exists = self.db.query(Result).filter(Result.id == result.id).first()
+            if not exists:
+                self.db.add(result)
 
         self.db.commit()
