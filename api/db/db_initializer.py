@@ -6,6 +6,9 @@ from models.model import Model
 from models.scene_model import SceneModel
 from models.quiz import Quiz
 from models.result import Result
+from models.question_type import QuestionType
+from models.question import Question
+from models.answer import Answer
 from enums.role import RoleName
 from enums.scene import SceneName, SceneTitle, SceneDescription
 from enums.model import ModelName, ModelTitle, ModelDescription
@@ -24,6 +27,9 @@ class DBInitializer:
             self.init_model_children()
             self.init_quizzes()
             self.init_results()
+            self.init_questions_types()
+            self.init_questions()
+            self.init_answers()
         finally:
             self.db.close()
 
@@ -165,8 +171,8 @@ class DBInitializer:
         quizzes = [
             Quiz(
                 id=1,
-                title="Первый тестовый основной тест на основополагающие знания",
-                description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas iaculis viverra ultricies. Morbi varius maximus risus, vitae interdum tortor facilisis eget. Proin rhoncus, magna id fermentum venenatis, ligula lacus sollicitudin est, at porttitor diam ligula a turpis. Proin scelerisque magna ac augue ullamcorper consectetur. Pellentesque nibh ligula, pulvinar quis mi id, maximus dapibus felis. Maecenas dignissim maximus turpis in suscipit. Vivamus vitae elit viverra, lacinia turpis quis, lobortis sapien. Cras quam nibh, dignissim sit amet gravida a, tempor ut metus. Maecenas iaculis velit ac placerat eleifend. Integer non luctus nunc. Cras mauris enim, sollicitudin sit amet odio id, vulputate accumsan augue.",
+                title="Тестирование знаний основных конструктивных элементов РВСП-5000",
+                description="Данный тест предназначен для оценки уровня теоретических знаний по устройству, конструкции и основным технологическим элементам резервуара РВСП-5000. В ходе тестирования проверяется понимание назначения ключевых узлов, принципов их работы и особенностей эксплуатации оборудования. Материалы теста охватывают базовые сведения, необходимые для подготовки специалистов, работающих с вертикальными стальными резервуарами.",
                 attempts_count=2,
                 questions_count=5,
                 time=10,
@@ -174,8 +180,8 @@ class DBInitializer:
             ),
             Quiz(
                 id=2,
-                title="Второй тестовый дополнительный тест на расширенные знания",
-                description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas iaculis viverra ultricies. Morbi varius maximus risus, vitae interdum tortor facilisis eget. Proin rhoncus, magna id fermentum venenatis, ligula lacus sollicitudin est, at porttitor diam ligula a turpis. Proin scelerisque magna ac augue ullamcorper consectetur. Pellentesque nibh ligula, pulvinar quis mi id, maximus dapibus felis. Maecenas dignissim maximus turpis in suscipit. Vivamus vitae elit viverra, lacinia turpis quis, lobortis sapien. Cras quam nibh, dignissim sit amet gravida a, tempor ut metus. Maecenas iaculis velit ac placerat eleifend. Integer non luctus nunc. Cras mauris enim, sollicitudin sit amet odio id, vulputate accumsan augue.",
+                title="Расширенное тестирование по устройству, эксплуатации и технологическим системам РВСП-5000",
+                description="Данный тест предназначен для углублённой проверки знаний, связанных с конструкцией, эксплуатацией и техническими особенностями резервуара РВСП-5000. Вопросы охватывают дополнительные аспекты функционирования оборудования, назначение вспомогательных систем и принципы взаимодействия отдельных технологических узлов. Тестирование ориентировано на специалистов, обладающих базовой подготовкой и стремящихся подтвердить расширенный уровень профессиональных компетенций.",
                 attempts_count=1,
                 questions_count=3,
                 time=5,
@@ -215,4 +221,191 @@ class DBInitializer:
             if not exists:
                 self.db.add(result)
 
+        self.db.commit()
+
+    def init_questions_types(self):
+        questions_types = [
+            QuestionType(
+                id=1,
+                name="MultipleChoice"
+            ),
+            QuestionType(
+                id=2,
+                name="SingleChoice"
+            )
+        ]
+
+        for question_type in questions_types:
+            exists = self.db.query(QuestionType).filter(QuestionType.id == question_type.id).first()
+            if not exists:
+                self.db.add(question_type)
+
+        self.db.commit()
+
+    def init_questions(self):
+        questions = [
+            Question(
+                id=1,
+                question_text="Какие из перечисленных объектов находятся на сцене?",
+                quiz_id=1,
+                question_type_id=1
+            ),
+            Question(
+                id=2,
+                question_text="Какое из определений устройства хлопуша ХП является верным?",
+                quiz_id=1,
+                question_type_id=2
+            ),
+            Question(
+                id=3,
+                question_text="Для чего предназначены дыхательные клапаны?",
+                quiz_id=1,
+                question_type_id=1
+            ),
+            Question(
+                id=4,
+                question_text="Какое из определений РВСП-5000 является верным?",
+                quiz_id=1,
+                question_type_id=2
+            ),
+            Question(
+                id=5,
+                question_text="Дополните определение: ... — это конструктивный элемент промышленного оборудования, представляющий собой герметичное отверстие с крышкой, которое монтируется в стенках или крышах резервуаров, ёмкостей, аппаратов, цистерн, колодцев и других замкнутых пространств. Его главная функция — обеспечить безопасный и удобный доступ персонала внутрь конструкции для выполнения различных работ.",
+                quiz_id=1,
+                question_type_id=2
+            )
+        ]
+
+        for question in questions:
+            exists = self.db.query(Question).filter(Question.id == question.id).first()
+            if not exists:
+                self.db.add(question)
+        
+        self.db.commit()
+
+    def init_answers(self):
+        answers = [
+            Answer(
+                id=1,
+                text="Паровая турбина",
+                question_id=1
+            ),
+            Answer(
+                id=2,
+                text="Люк-лаз",
+                question_id=1,
+                is_correct=True
+            ),
+            Answer(
+                id=3,
+                text="Подъемный кран",
+                question_id=1
+            ),
+            Answer(
+                id=4,
+                text="Дыхательный клапан",
+                question_id=1,
+                is_correct=True
+            ),
+
+            Answer(
+                id=5,
+                text="Хлопуша ХП — это механический элемент, предназначенный для передачи крутящего момента и компенсации угловых деформаций между узлами конструкции.",
+                question_id=2
+            ),
+            Answer(
+                id=6,
+                text="Хлопуша ХП — это разъёмный тип крепления трубопроводов или валов, обеспечивающий герметичность и возможность быстрого демонтажа системы.",
+                question_id=2
+            ),
+            Answer(
+                id=7,
+                text="Хлопуша ХП — это устройство, устанавливаемое внутри вертикального резервуара на приёмо‑раздаточном патрубке для обеспечения операций налива и слива нефтепродукта, а также для дополнительной защиты от его утечки в случае повреждения трубопровода или неисправности запорной арматуры.",
+                question_id=2,
+                is_correct=True
+            ),
+            Answer(
+                id=8,
+                text="Хлопуша ХП — это сборочная единица, включающая подшипник и элементы его крепления, обеспечивающая поддержку вращающегося вала и снижение трения.",
+                question_id=2
+            ),
+
+            Answer(
+                id=9,
+                text="Для сокращения потерь нефти от испарения",
+                question_id=3,
+                is_correct=True
+            ),
+            Answer(
+                id=10,
+                text="Для аварийного слива нефтепродукта",
+                question_id=3
+            ),
+            Answer(
+                id=11,
+                text="Для отвода статического электричества с корпуса резервуара",
+                question_id=3
+            ),
+            Answer(
+                id=12,
+                text="Для регулирования давления в газовом пространстве или вакуума вертикальных резервуаров",
+                question_id=3,
+                is_correct=True
+            ),
+            Answer(
+                id=13,
+                text="Для очистки поступающего воздуха от влаги",
+                question_id=3
+            ),
+
+            Answer(
+                id=14,
+                text="РВСП-5000 — специальная ёмкость для хранения вязких нефтепродуктов при повышенной температуре. Внутри резервуара располагаются электрические нагревательные секции.",
+                question_id=4
+            ),
+            Answer(
+                id=15,
+                text="РВСП-5000 — накопительная ёмкость для промежуточного хранения топлива во время технического обслуживания трубопроводов. Оснащается системой быстрого опорожнения.",
+                question_id=4
+            ),
+            Answer(
+                id=16,
+                text="РВСП-5000 — технологический узел для подачи сырья в установки низкотемпературной дистилляции. Обеспечивает автоматическое регулирование потоков вещества.",
+                question_id=4
+            ),
+            Answer(
+                id=17,
+                text="РВСП-5000 — представляет собой вертикальный цилиндрический резервуар со стационарным покрытием. Предназначен для измерения объёма, а также приёма, хранения и отпуска нефти и нефтепродуктов.",
+                question_id=4,
+                is_correct=True
+            ),
+
+            Answer(
+                id=18,
+                text="Инспекционный клапан",
+                question_id=5
+            ),
+            Answer(
+                id=19,
+                text="Люк-лаз",
+                question_id=5,
+                is_correct=True
+            ),
+            Answer(
+                id=20,
+                text="Контрольный шлюз",
+                question_id=5
+            ),
+            Answer(
+                id=21,
+                text="Смотровой патрубок",
+                question_id=5
+            ),
+        ]
+
+        for answer in answers:
+            exists = self.db.query(Answer).filter(Answer.id == answer.id).first()
+            if not exists:
+                self.db.add(answer)
+        
         self.db.commit()
