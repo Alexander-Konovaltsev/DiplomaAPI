@@ -9,3 +9,12 @@ class ResultResponse(BaseModel):
     created_at: datetime
     user_id: int
     quiz_id: int
+
+    class Config:
+        from_attributes = True
+
+class ResultRequest(BaseModel):
+    percent: int
+    total_answers: int
+    correct_answers: int
+    quiz_id: int

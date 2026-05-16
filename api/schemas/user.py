@@ -51,3 +51,6 @@ class UserLoginRequest(BaseModel):
 
 class UserLoginResponse(BaseModel):
     access_token: str
+
+    class Config:
+        from_attributes = True
