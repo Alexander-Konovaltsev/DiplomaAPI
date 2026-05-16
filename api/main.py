@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from db.db_initializer import DBInitializer
 from db.session import Base, engine
-from routers import roles, users, scenes, models, models_views, quizzes, results, questions
+from routers import roles, users, scenes, models, models_views, quizzes, results, questions, results_details
 
 app = FastAPI()
 
@@ -13,6 +13,7 @@ app.include_router(models_views.router)
 app.include_router(quizzes.router)
 app.include_router(results.router)
 app.include_router(questions.router)
+app.include_router(results_details.router)
 
 @app.on_event("startup")
 def on_startup():
