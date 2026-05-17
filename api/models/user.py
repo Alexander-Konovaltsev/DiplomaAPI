@@ -16,4 +16,4 @@ class User(Base):
     workplace = Column(String(255), nullable=False)
     created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
 
-    role = relationship("Role")
+    role = relationship("Role", backref="users")
