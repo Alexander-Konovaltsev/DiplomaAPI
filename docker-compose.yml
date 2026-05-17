@@ -25,6 +25,7 @@ services:
       - DB_HOST
       - DB_PORT
       - SECRET_KEY
+      - ACCESS_TOKEN_EXPIRE_MINUTES
     volumes:
       - ./api:/app
 

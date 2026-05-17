@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 class SecurityService:
     __ALGORITHM = "HS256"
     __SECRET_KEY = os.getenv("SECRET_KEY")
+    __ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 
     @staticmethod
     def hash_password(password: str) -> str:
@@ -17,9 +18,9 @@ class SecurityService:
         return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
     
     @classmethod
-    def create_jwt_token(cls, data: dict, expires_minutes: int = 120) -> str:
+    def create_jwt_token(cls, data: dict) -> str:
         to_encode = data.copy()
-        expire = datetime.utcnow() + timedelta(minutes=expires_minutes)
+        expire = datetime.utcnow() + timedelta(minutes=cls.__ACCESS_TOKEN_EXPIRE_MINUTES)
         to_encode.update({"exp": expire})
         token = jwt.encode(to_encode, cls.__SECRET_KEY, algorithm=cls.__ALGORITHM)
         return token
